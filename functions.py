@@ -10,7 +10,7 @@ features2 = ['ejection_fraction','serum_creatinine','creatinine_phosphokinase', 
 
 def m1(Z):
     print(pd.DataFrame(Z,index=[0]))
-    data = pd.read_csv("C:/Users/saeed/Documents/Hreat_Disease[1]/Hreat_Disease/data1.csv")
+    data = pd.read_csv("data1.csv")
     y = data['target']
     features = data.columns[1:-1]
     X = data[features]
@@ -21,7 +21,7 @@ def m1(Z):
 
 def m2(Z):
     print(pd.DataFrame(Z,index=[0]))
-    data = pd.read_csv("C:/Users/saeed/Documents/Hreat_Disease[1]/Hreat_Disease/data2.csv")
+    data = pd.read_csv("/data2.csv")
     X = data[features2]
     scaler = MinMaxScaler()
     # X = pd.DataFrame(scaler.fit_transform(X), columns=features2)
