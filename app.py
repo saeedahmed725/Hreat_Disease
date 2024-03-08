@@ -33,7 +33,8 @@ def result1():
 @app.route("/result2", methods=['POST', 'GET'])
 def result2():
 
-    output = request.form
+    # output = request.form
+    output = request.get_json()
     r = m2(output)
 
     if( r == 0):
