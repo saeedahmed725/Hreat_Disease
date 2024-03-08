@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Hreat Disease test</title>
+</head>
+<style>
+    body {
+        background-color: #d2f3fa;
+        align-items: center;
+    }
+
+    #header h1 {
+        padding: 10px;
+        width: 100%;
+        height: 50px;
+        color: white;
+        background-color: #00b3db;
+        text-align: center;
+        margin-top: -15px;
+        margin-left: -15px;
+    }
+
+    .second {
+        left: 50%;
+        top: 15%;
+        position: absolute;
+    }
+
+    .model {
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+        width: 93%;
+        height: 480px;
+        vertical-align: middle;
+        position: relative;
+        left: 2%;
+        margin-bottom: 30px;
+    }
+
+    .model div {
+        padding: 5px;
+        width: 51.61%;
+        margin-top: 10px;
+    }
+
+    .model h3 {
+        position: relative;
+        text-align: center;
+        top: -20px;
+        font-size: 30px;
+    }
+
+    .first {
+        position: absolute;
+        top: 15%;
+    }
+
+    input {
+        width: 50px;
+    }
+
+    #info {
+        text-align: center;
+        width: 90%;
+        position: relative;
+        left: 5%;
+        height: fit-content;
+    }
+
+    #info p {
+        font-size: 20px;
+        width: 60%;
+        position: relative;
+        top: -20px;
+    }
+
+    #info h2 {
+        font-size: 40px;
+    }
+
+    #img1 {
+        height: 300px;
+        position: absolute;
+        left: 70%;
+        top: 18px;
+    }
+
+    .model button {
+        position: absolute;
+        font-size: 20px;
+        width: 130px;
+        background-color: #2196F3;
+        color: white;
+        border-radius: 20px;
+    }
+
+    .let_space {
+        margin-top: 100px;
+        width: 95%;
+        left: 50px;
+        height: 50px;
+        border-radius: 20px;
+        position: relative;
+        top: -80px;
+        background-color: white;
+    }
+
+    .let_space h3 {
+        position: absolute;
+        padding-left: 130px;
+    }
+</style>
+
+<body>
+    <div id="header">
+        <h1>AI can Detect Hreat Disease</h1>
+    </div>
+    <div id="info">
+
+        <h2>Welcome to our Heart Health Diagnostic Center</h2>
+        <p style="text-align: center;">
+            Our user-friendly interface is designed to assist you in
+            assessing potential risks and symptoms related to heart disease and heart failure. By utilizing our Symptom
+            Checker, you can input your symptoms, and our system will provide a preliminary analysis. Additionally, our
+            Risk Assessment questionnaire will help you identify lifestyle factors that might contribute to heart
+            issues. It's important to note that this tool serves as an informative guide and should not replace
+            professional medical advice. For a comprehensive diagnosis and personalized guidance, we encourage you to
+            consult with healthcare professionals. Explore our resources for valuable information on heart health,
+            causes of heart disease, and proactive measures for a healthier heart.
+        </p>
+        <img src="Online Doctor-amico.svg" id="img1" alt="">
+    </div>
+    <div class="model">
+        <h3>Enter patient's analysis</h3>
+        <form action="/result1" method="post">
+            <div class="first">
+                <div id="age">
+                    <label for="age">Age:</label>
+                    <input type="text" name="age">
+                </div>
+                <div id="sex">
+                    <label for="sex">Gender:</label>
+                    <select name="sex">
+                        <option value=0>Female</option>
+                        <option value=1>Male</option>
+                    </select>
+                </div>
+                <div id="cp">
+                    <label for="cp">Chest pain type:</label>
+                    <select name="cp">
+                        <option value=0>typical angina</option>
+                        <option value=1>atypical angina</option>
+                        <option value=2>non-anginal pain</option>
+                        <option value=3>asymptomatic</option>
+                    </select>
+                </div>
+                <div id="trestbps">
+                    <label for="trestbps">Resting blood pressure (mm Hg):</label>
+                    <input type="text" name="trestbps">
+                </div>
+
+                <div id="chol">
+                    <label for="chol">Serum cholesterol (mg/dl):</label>
+                    <input type="text" name="chol">
+                </div>
+
+                <div>
+                    <label for="fbs">Fasting blood sugar > 120 mg/dl:</label>
+                    <select name="fbs" id="fbs">
+                        <option value=1>Yes</option>
+                        <option value=0>No</option>
+                    </select>
+                </div>
+
+
+                <div>
+                    <label for="restecg">resting electrocardiographic results:</label>
+                    <select name="restecg" id="restecg">
+                        <option value=0>normal</option>
+                        <option value=1>ST-T wave abnormality</option>
+                        <option value=2>left ventricular hypertrophy</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="second">
+
+                <div id="thalach">
+                    <label for="thalach">Maximum heart rate achieved:</label>
+                    <input type="text" name="thalach">
+                </div>
+
+                <div>
+                    <label for="exang">Exercise induced angina</label>
+                    <select name="exang" id="exang">
+                        <option value=1>Yes</option>
+                        <option value=0>No</option>
+                    </select>
+                </div>
+
+                <div id="oldpeak">
+                    <label for="oldpeak">ST depression induced by exercise relative to rest</label>
+                    <input type="text" name="oldpeak">
+                </div>
+
+                <div id="slope">
+                    <label for="slope">The slope of the peak exercise ST segment</label>
+                    <select name="slope">
+                        <option value=0>upsloping</option>
+                        <option value=1>flat</option>
+                        <option value=2>downsloping</option>
+                    </select>
+                </div>
+
+                <div id="ca">
+                    <label for="ca">Number of major vessels (0-3) colored by flourosopy</label>
+                    <input type="text" name="ca">
+                </div>
+
+                <div id="thal">
+                    <label for="thal">Thalassemia</label>
+                    <select name="thal">
+                        <option value=0>Fixed defect</option>
+                        <option value=1>Normal</option>
+                        <option value=2>Reversable defect</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" style="
+            left: 500px;
+            top: 420px;" >Submit</button>
+            {% if ftest %}
+            <h3 style="top:350px;color: rgb(28, 133, 14);left: -20px;">{{ftest}}</h3>
+            {% endif %}
+        </form>
+    </div>
+
+    <div class="model" style="height: 400px;">
+        <h3>Enter patient's analysis</h3>
+        <form action="/result2" method="post">
+            <div class="first">
+                <div id="ejection_fraction">
+                    <label for="ejection_fraction">percentage of blood leaving the heart at each contraction:</label>
+                    <input type="text" name="ejection_fraction">
+                </div>
+
+                <div id="serum_creatinine">
+                    <label for="serum_creatinine">level of serum creatinine in the blood(mg/dL):</label>
+                    <input type="text" name="serum_creatinine">
+                </div>
+
+                <div id="creatinine_phosphokinase">
+                    <label for="creatinine_phosphokinase">level of the CPK enzyme in the blood(mcg/L):</label>
+                    <input type="text" name="creatinine_phosphokinase">
+                </div>
+
+                <div id="serum_sodium">
+                    <label for="serum_sodium">level of serum sodium in the blood(mEq/L):</label>
+                    <input type="text" name="serum_sodium">
+                </div>
+
+                <div id="platelets">
+                    <label for="platelets">platelets in the blood(Kplatelets/mL):</label>
+                    <input type="text" name="platelets">
+                </div>
+
+            </div>
+
+            <div class="second">
+
+                <div id="high_blood_pressure">
+                    <label for="high_blood_pressure">Is patient has hypertension?</label>
+                    <select name="high_blood_pressure">
+                        <option>blood pressure</option>
+                        <option value=0>No</option>
+                        <option value=1>Yes</option>
+                    </select>
+                </div>
+
+                <div id="smoking">
+                    <label for="smoking">Is patient smokes or not?</label>
+                    <select name="smoking">
+                        <option>smoking</option>
+                        <option value=0>No</option>
+                        <option value=1>Yes</option>
+                    </select>
+                </div>
+
+                <div id="diabetes">
+                    <label for="diabetes">Is patient has diabetes?</label>
+                    <select name="diabetes">
+                        <option>diabetes</option>
+                        <option value=0>No</option>
+                        <option value=1>Yes</option>
+                    </select>
+                </div>
+
+                <div id="time">
+                    <label for="time">follow-up period(days)</label>
+                    <input type="text" name="time">
+                </div>
+            </div>
+
+            <button type="submit" style="
+            left: 500px;
+            top: 365px;">Submit</button>
+            {% if stest %}
+            <h3 style="top:283px;color: rgb(28, 133, 14);left: -20px;">{{stest}}</h3>
+            {% endif %}
+        </form>
+    </div>
+</body>
+
+</html>
