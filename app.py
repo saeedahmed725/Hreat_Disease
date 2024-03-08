@@ -20,7 +20,6 @@ def result1():
     # output = request.form
     output = request.get_json()
     print(output)
-    #[{'age': '10', 'sex': '0', 'cp': '0', 'trestbps': '34', 'chol': '32', 'fbs': '1', 'restecg': '0', 'thalach': '23', 'exang': '1', 'oldpeak': '24', 'slope': '0', 'ca': '1', 'thal': '0'}]
     r = m1(output)
 
     if r == 0:
@@ -46,4 +45,4 @@ def result2():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+    app.run(host='0.0.0.0', port=8080)
