@@ -21,7 +21,7 @@ def m1(Z):
 
 def m2(Z):
     print(pd.DataFrame(Z,index=[0]))
-    data = pd.read_csv("/data2.csv")
+    data = pd.read_csv("data2.csv")
     X = data[features2]
     scaler = MinMaxScaler()
     # X = pd.DataFrame(scaler.fit_transform(X), columns=features2)
