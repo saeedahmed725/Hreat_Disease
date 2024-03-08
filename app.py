@@ -40,8 +40,8 @@ def result2():
         r = "has no Hreat failur"
     else:
         r = "May has Hreat failur"
-
-    return render_template("index.html" ,stest = r)
+    return r
+    # return render_template("index.html" ,stest = r)
 
 
 if __name__ == '__main__':
