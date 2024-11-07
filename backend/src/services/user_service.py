@@ -1,8 +1,23 @@
 from datetime import datetime
+from random import randint
 from bson import ObjectId
 from models import dto
-from repos.user_repo import UserRepository
+from repos import user_repo
+from models import Users
 from utils.bcrypt_hashing import HashLib
+from utils import formating
+
+
+def get(limit: int, offset: int) -> list[Users.User]:
+    return user_repo.get(limit=limit, offset=offset)
+            
+def get_by_id(id: str) -> Users.User | None:
+    return user_repo.get_by_id(id)
+    
+def get_by_email(email: str) -> Users.User | None:
+    return user_repo.get_by_email(email.lower().strip())
+
+
 
 async def get_by_email(email: str) -> dto.GetUser | None:
     """
@@ -11,20 +26,43 @@ async def get_by_email(email: str) -> dto.GetUser | None:
     :param email: The email of the user to fetch.
     :return: A GetUser DTO object if the user is found, otherwise None.
     """
-    response = UserRepository.find_one({"email": email})
-    return dto.GetUser.from_dict(response) if response else None
+    return await user_repo.get_by_email(email.lower().strip())   
 
-async def signup_user(signup_data: dto.CreateUser) -> dto.GetUser:
-    hashed_password = HashLib.hash(signup_data.password)
-
-    new_user_data = {
-        "name": signup_data.name,
-        "surname": signup_data.surname,
-        "email": signup_data.email,
-        "password": hashed_password,
-        "created_at": datetime.utcnow(),  # Set current time
-        "updated_at": datetime.utcnow()   # Set current time
-    }
+async def create(user:dto.CreateUser) -> Users.User: 
+    return await user_repo.add(user) 
+ 
+async def update_password(id: str, new_password: str) -> None:
+    user = await get_by_id(id)
+    if user is None:
+        return
+    new_pass_hash = HashLib.hash(new_password)
+    await user_repo.update(
+        user['_id'],
+        user['name'],
+        user['surname'],
+        user['role'],
+        user['email'],
+        new_pass_hash
+    )
     
-    created_user = UserRepository.insert_one(new_user_data)
-    return dto.GetUser.from_dict(created_user)  # Ensure created_user is not None
+    
+async def reset_password(id: str) -> None:
+    user = await get_by_id(id)
+    if user is None:
+        return
+    
+    new_password = str(randint(1000, 9999))
+    print(new_password)
+    password_hash = HashLib.hash(new_password)
+    await user_repo.update(
+        user['_id'],
+        user['name'],
+        user['surname'],
+        user['role'],
+        user['email'],
+        password_hash
+    )
+    return new_password
+
+def delete(id: int) -> None:
+    user_repo.delete(id)

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from datetime import datetime
 from typing import Optional
 from bson import ObjectId
@@ -8,28 +8,21 @@ class CreateUser(BaseModel):
     name: str
     surname: str
     email: str
-    password: str = Field(..., min_length=4)
-    created_at: Optional[datetime] = Field(default_factory=datetime.utcnow)  # Automatically set the current UTC time
-    updated_at: Optional[datetime] = Field(default_factory=datetime.utcnow) #For 1 big letter, 1 small letter, 1 number, 1 special character and min 8 characters: pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+    role: str = "user"
+    password: str = Field(..., min_length=4),
+    created_at: datetime = Field(default_factory=datetime.now)
+    updated_at: datetime = Field(default_factory=datetime.now)
 
 class GetUser(BaseModel):
+    id: int = Field(default=None , alias="_id")
     name: str
     surname: str
+    role: str
     email: str
     updated_at: datetime
-    created_at: datetime         
+    created_at: datetime      
     
-
-
-    @staticmethod
-    def from_dict(data: dict) -> "GetUser":
-        return GetUser(
-            name=data.get("name"),
-            surname=data.get("surname"),
-            email=data.get("email"),
-            updated_at=data.get("updated_at"),
-            created_at=data.get("created_at"),
-        )
+       
     
 class UpdateUser(BaseModel):
     name: str
@@ -45,7 +38,16 @@ class UpdateUserPass(BaseModel):
     
 # Token
 class Token(BaseModel):
-    user_id: int
+    user_id: str   
+    role : str
     exp: datetime
+    
+    @field_validator("user_id", mode="before")
+    def validate_id(cls, value):
+        if isinstance(value, ObjectId):
+            return str(value)
+        return value
+ 
+
     
     

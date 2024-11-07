@@ -8,8 +8,8 @@ if not DB_CONNECTION_STRING:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    client = MongoClient(DB_CONNECTION_STRING)
-    database = client.get_default_database()
+    client = MongoClient(host=DB_CONNECTION_STRING)
+    database = client['Quran']
 
     # Ping the database to check the connection
     pong = database.command("ping")

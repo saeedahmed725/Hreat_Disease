@@ -1,19 +1,38 @@
+from bson import ObjectId
 from db.context import users_collection
-from models import dto
-class UserRepository:
-    @staticmethod
-    def find_one(query: dict) -> dict | None:
-        """
-        Queries the 'users' collection in the database.
-        """
-        return users_collection.find_one(query)
+from models import dto , Users
+
+async def get_by_email(email: str) -> dto.GetUser | None:
+    """
+    Fetches a user by their email.
     
+    :param email: The email of the user to fetch.
+    :return: A GetUser DTO object if the user is found, otherwise None.
+    """
+    user = users_collection.find_one({"email": email})
+    if user:
+        return user
+    return None
+
+async def get_by_id(id: str) -> Users.User | None:
+    objectId = ObjectId(id)
+    user = users_collection.find_one({"_id": objectId})
+    if user:
+        return user
+    return None
+
+async def get(limit: int = 1000, offset: int = 0) -> list[Users.User]:
+    users = users_collection.find().limit(limit).skip(offset)
+    return users
+
+
+async def add(user:dto.CreateUser) -> Users.User:
+    users_collection.insert_one(user) 
+    returned_user = users_collection.find_one({"email": user['email']})
+    return returned_user
+
+async def update(id: int, name: str, surname: str, role: str, email: str, password: str) -> None:
+    users_collection.update_one({"_id": id}, {"$set": {"name": name, "surname": surname, "role": role, "email": email, "password": password}})
     
-    @staticmethod
-    
-    def insert_one(user_data: dict) -> dict:
-        """
-        Inserts a document into the 'users' collection in the database.
-        """
-        result = users_collection.insert_one(user_data)  # MongoDB generates the _id
-        return users_collection.find_one({"_id": result.inserted_id}) 
+async def delete(id: int) -> None:
+    users_collection.delete_one({"_id": id})
