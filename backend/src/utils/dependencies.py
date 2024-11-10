@@ -7,11 +7,12 @@ from fastapi import HTTPException
 
 from constants import COOKIES_KEY_NAME
 from models import Users as db
-from services import user_service
+from services.user_service import UserService   
 from services import jwt_service
 
 
 async def get_user(req: Request, res: Response) -> db.User:
+    user_service = UserService()
     session_token = req.cookies.get(COOKIES_KEY_NAME)
     if session_token is None:
         raise HTTPException(status_code=401, detail="Unauthorized")
@@ -20,7 +21,7 @@ async def get_user(req: Request, res: Response) -> db.User:
     if token is None:
         res.delete_cookie(COOKIES_KEY_NAME)
         raise HTTPException(status_code=401, detail="Unauthorized")
-    user =await user_service.get_by_id(token.user_id)
+    user =await user_service.get_user_by_id(token.user_id)
     if user is None:
         res.delete_cookie(COOKIES_KEY_NAME)
         raise HTTPException(status_code=401, detail="Unauthorized")

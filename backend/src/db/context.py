@@ -10,6 +10,7 @@ client = MongoClient(DB_CONNECTION_STRING)
 db_name ="Quran"
 db = client[db_name]
 users_collection = db['users']  # Assuming 'users' is the collection name
+chat_sessions_collection = db['chat_sessions']  # Assuming 'chat_sessions' is the collection name
 
 def create_db() -> None:
     """

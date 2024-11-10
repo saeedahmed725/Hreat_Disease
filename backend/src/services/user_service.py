@@ -1,68 +1,55 @@
-from datetime import datetime
+from typing import List, Optional
 from random import randint
-from bson import ObjectId
-from models import dto
-from repos import user_repo
-from models import Users
+from models.dto import CreateUser, GetUser
+from models.Users import User
+from repos.user_repository import UserRepository
 from utils.bcrypt_hashing import HashLib
-from utils import formating
 
-
-def get(limit: int, offset: int) -> list[Users.User]:
-    return user_repo.get(limit=limit, offset=offset)
-            
-def get_by_id(id: str) -> Users.User | None:
-    return user_repo.get_by_id(id)
+class UserService:
+    def __init__(self):
+        self.user_repo = UserRepository()
     
-def get_by_email(email: str) -> Users.User | None:
-    return user_repo.get_by_email(email.lower().strip())
+    async def get_users(self, limit: int = 1000, offset: int = 0) -> List[User]:
+        return await self.user_repo.get(limit=limit, offset=offset)
 
-
-
-async def get_by_email(email: str) -> dto.GetUser | None:
-    """
-    Fetches a user by their email.
+    async def get_user_by_id(self, user_id: str) -> Optional[User]:
+        return await self.user_repo.get_by_id(user_id)
     
-    :param email: The email of the user to fetch.
-    :return: A GetUser DTO object if the user is found, otherwise None.
-    """
-    return await user_repo.get_by_email(email.lower().strip())   
+    async def get_user_by_email(self, email: str) -> Optional[GetUser]:
+        return await self.user_repo.get_by_email(email.lower().strip())
 
-async def create(user:dto.CreateUser) -> Users.User: 
-    return await user_repo.add(user) 
- 
-async def update_password(id: str, new_password: str) -> None:
-    user = await get_by_id(id)
-    if user is None:
-        return
-    new_pass_hash = HashLib.hash(new_password)
-    await user_repo.update(
-        user['_id'],
-        user['name'],
-        user['surname'],
-        user['role'],
-        user['email'],
-        new_pass_hash
-    )
+    async def create_user(self, user: CreateUser) -> User:
+        return await self.user_repo.add(user)
     
+    async def update_password(self, user_id: str, new_password: str) -> None:
+        user = await self.get_user_by_id(user_id)
+        if not user:
+            return
+        new_pass_hash = HashLib.hash(new_password)
+        await self.user_repo.update(
+            id=user_id,
+            name=user.name,
+            surname=user.surname,
+            role=user.role,
+            email=user.email,
+            password=new_pass_hash
+        )
     
-async def reset_password(id: str) -> None:
-    user = await get_by_id(id)
-    if user is None:
-        return
-    
-    new_password = str(randint(1000, 9999))
-    print(new_password)
-    password_hash = HashLib.hash(new_password)
-    await user_repo.update(
-        user['_id'],
-        user['name'],
-        user['surname'],
-        user['role'],
-        user['email'],
-        password_hash
-    )
-    return new_password
+    async def reset_password(self, user_id: str) -> Optional[str]:
+        user = await self.get_user_by_id(user_id)
+        if not user:
+            return None
+        new_password = str(randint(1000, 9999))
+        password_hash = HashLib.hash(new_password)
+        await self.user_repo.update(
+            id=user_id,
+            name=user.name,
+            surname=user.surname,
+            role=user.role,
+            email=user.email,
+            password=password_hash
+        )
+        return new_password
 
-def delete(id: int) -> None:
-    user_repo.delete(id)
+    async def delete_user(self, user_id: str) -> None:
+        await self.user_repo.delete(user_id)

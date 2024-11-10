@@ -30,3 +30,7 @@ class User(BaseModel):
         if isinstance(value, ObjectId):
             return str(value)
         return value
+     
+    @field_validator("updated_at", mode="before")
+    def validate_updated_at(cls, value):
+        return datetime.now()
