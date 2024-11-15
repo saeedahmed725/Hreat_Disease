@@ -160,16 +160,15 @@ class Messages(MessageBase):
     id: str = Field(..., alias="_id", description="Unique identifier for the message")
 
     class Config:
-        allow_population_by_field_name = True
+        populate_by_name = True
         json_encoders = {
             datetime: lambda v: v.isoformat()
         }
 
 class MessageResponse(BaseModel):
     """Model for API responses containing message data"""
-    message: Messages
-    reactions: Optional[List[Dict]] = Field(default_factory=list, description="List of reactions to the message")
-    thread_length: Optional[int] = Field(None, description="Number of messages in the thread if this is a parent message")
+    usr_message: str
+    message: str
 
 class MessageList(BaseModel):
     """Model for listing multiple messages"""

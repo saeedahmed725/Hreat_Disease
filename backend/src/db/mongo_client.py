@@ -15,7 +15,7 @@ class MongoDBClient:
     async def close(cls):
         """Close database connection"""
         if cls.client is not None:
-            await cls.client.close()
+            cls.client.close()
             cls.client = None
     
     @classmethod

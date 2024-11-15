@@ -1,8 +1,9 @@
 from datetime import datetime
 from typing import List, Optional
-from models.dto import ChatSession, Messages
+from models.dto import ChatSession
+from models import Messages
 from repos.chat_repository import ChatRepository, MessageRepository
-
+from faissEmbedding.app import embed_data , retrieve_embedded_data
 class ChatService:
     def __init__(self):
         self.chat_repo = ChatRepository()
@@ -22,7 +23,7 @@ class ChatService:
         self,
         session_id: str,
         user_id: str,
-        content: str,
+        content: Messages.MessageContent,
         role: str,
         metadata: Optional[dict] = None
     ) -> Messages:
@@ -31,19 +32,21 @@ class ChatService:
             "user_id": user_id,
             "role": role,
             "content": {
-                "text": content,
+                "text": content.text,
                 "metadata": metadata or {}
             },
             "is_visible": True,
-            "metadata": {}
+            "metadata":{} or metadata
         }
+        embed_data(content.text , session_id)
+        retrieve_embedded_data(content.text , session_id)
         return await self.message_repo.create_message(message_data)
     
     async def get_chat_history(
         self,
         session_id: str,
         limit: int = 50
-    ) -> List[Messages]:
+    ) -> List[Messages.Messages]:
         return await self.message_repo.get_chat_history(session_id, limit)
     
     async def reset_session(self, session_id: str) -> None:
