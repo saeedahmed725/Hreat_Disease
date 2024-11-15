@@ -12,6 +12,8 @@ from langchain_community.docstore.in_memory import InMemoryDocstore
 from langchain.schema import HumanMessage, AIMessage
 from langchain_core.documents import Document
 from pathlib import Path
+
+import torch
 from faissEmbedding.chat_memory import app, config
 
 # Configure logging
@@ -32,7 +34,8 @@ os.environ["GOOGLE_API_KEY"] = 'AIzaSyDu6JN_L9gojotvFa8ALFgYO3mux9eB3-U'
 def init_embeddings() -> HuggingFaceEmbeddings:
     """Initialize and return HuggingFace embeddings."""
     try:
-        model_kwargs = {'device': 'cuda'}  # You might want to add cuda availability check
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        model_kwargs = {'device': device}  # You might want to add cuda availability check
         encode_kwargs = {'normalize_embeddings': False}
         return HuggingFaceEmbeddings(
             model_name=MODEL_PATH,
