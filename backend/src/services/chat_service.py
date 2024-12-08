@@ -12,11 +12,13 @@ class ChatService:
     async def create_session(
         self,
         user_id: str,
-        title: Optional[str] = None
+        unique_chat_id:str,
+        chat_title: Optional[str] = None
     ) -> ChatSession:
         return await self.chat_repo.create_session(
             user_id=user_id,
-            title=title or "Untitled Session"
+            chat_title=chat_title or "Untitled Session",
+            unique_chat_id=unique_chat_id
         )
     
     async def create_message(
@@ -25,21 +27,23 @@ class ChatService:
         user_id: str,
         content: Messages.MessageContent,
         role: str,
-        metadata: Optional[dict] = None
+        metadata: Optional[dict] 
     ) -> Messages:
+        embed_data(content.text , session_id)
+        client_respone = retrieve_embedded_data(content.text , session_id)
+        print(client_respone)
         message_data = {
-            "session_id": session_id,
+            "session_id": session_id+user_id,
             "user_id": user_id,
-            "role": role,
+            "role": "user",
             "content": {
                 "text": content.text,
                 "metadata": metadata or {}
             },
             "is_visible": True,
-            "metadata":{} or metadata
+            "metadata":{
+                "Content":client_respone[1]} 
         }
-        embed_data(content.text , session_id)
-        retrieve_embedded_data(content.text , session_id)
         return await self.message_repo.create_message(message_data)
     
     async def get_chat_history(

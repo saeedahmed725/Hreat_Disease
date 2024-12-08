@@ -21,4 +21,4 @@ class BaseDBModel(BaseModel):
 
     @field_validator("updated_at", mode="before")
     def update_timestamp(cls, value):
-        return datetime.utcnow()
+        return datetime.now()

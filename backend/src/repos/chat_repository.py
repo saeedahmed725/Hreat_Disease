@@ -8,10 +8,11 @@ class ChatRepository(BaseRepository[ChatSession]):
     def __init__(self):
         super().__init__(Collections.chat_sessions(), ChatSession)
     
-    async def create_session(self, user_id: str, title: str) -> ChatSession:
+    async def create_session(self, user_id: str, chat_title: str , unique_chat_id:str) -> ChatSession:
         session_data = {
             "user_id": user_id,
-            "title": title,
+            "chat_title": chat_title,
+            "unique_chat_id": unique_chat_id,
             "created_at": datetime.now(),
             "updated_at": datetime.now(),
             "is_active": True,

@@ -39,6 +39,10 @@ class UpdateUserPass(BaseModel):
     old_password: str = Field(..., min_length=4)
     new_password: str = Field(..., min_length=4)
     
+    
+class changeUserPass(BaseModel):
+    
+    new_password: str = Field(... , min_length=4)
 # Token
 class Token(BaseModel):
     user_id: str   
@@ -59,7 +63,8 @@ class Token(BaseModel):
 
 class ChatSessionBase(BaseModel):
     """Base model for chat session data"""
-    title: str = Field(..., description="Title of the chat session")
+    chat_title: str = Field(..., description="Title of the chat session")
+    unique_chat_id:str=Field(...,description="Unique Chat ID")
     user_id: str = Field(..., description="ID of the user who owns this session")
     created_at: datetime = Field(default_factory=datetime.now, description="Timestamp when the session was created")
     updated_at: Optional[datetime] = Field(default_factory=datetime.now, description="Timestamp when the session was last updated")

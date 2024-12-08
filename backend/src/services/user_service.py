@@ -10,6 +10,7 @@ class UserService:
         self.user_repo = UserRepository()
     
     async def get_users(self, limit: int = 1000, offset: int = 0) -> List[User]:
+        
         return await self.user_repo.get(limit=limit, offset=offset)
 
     async def get_user_by_id(self, user_id: str) -> Optional[User]:
@@ -23,6 +24,8 @@ class UserService:
     
     async def update_password(self, user_id: str, new_password: str) -> None:
         user = await self.get_user_by_id(user_id)
+        print(user)
+        print(user.surname)
         if not user:
             return
         new_pass_hash = HashLib.hash(new_password)
