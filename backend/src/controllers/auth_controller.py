@@ -20,6 +20,7 @@ def get_user_service():
 
 @router.post("/signup", response_model=Users.User, status_code=status.HTTP_201_CREATED)
 async def signup(user: dto.CreateUser , user_service: UserService = Depends(get_user_service)) -> Users.User:
+    email = user.email
     if not email:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid email")
     email = formating.format_string(user.email)
