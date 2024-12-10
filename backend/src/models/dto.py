@@ -22,6 +22,7 @@ class GetUser(BaseModel):
     surname: str
     role: str
     email: str
+    hashed_password: str
     updated_at: datetime
     created_at: datetime      
     
@@ -36,8 +37,9 @@ class LoginUser(BaseModel):
     password: str
     
 class UpdateUserPass(BaseModel):
-    old_password: str = Field(..., min_length=4)
+    email: str
     new_password: str = Field(..., min_length=4)
+    old_password: str = Field(..., min_length=4)
     
     
 class changeUserPass(BaseModel):

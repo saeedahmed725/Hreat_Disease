@@ -7,7 +7,7 @@ from datetime import datetime
 class User(BaseModel):
     id: Optional[str] = Field(alias="_id", default=None)  # Now directly a string
     name: str
-    surname: str
+    imageUrl : str
     email: EmailStr
     password: str
     role: str
